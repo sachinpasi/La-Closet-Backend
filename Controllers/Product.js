@@ -5,13 +5,11 @@ const fs = require("fs");
 
 exports.getProductById = (req, res, next, id) => {
   Product.findById(id)
-    .populate("category ")
-    .exec((error, product) => {
-      if (error) {
+    .populate("category")
+    .exec((err, product) => {
+      if (err) {
         return res.status(400).json({
-          error: {
-            message: "Product Not Found",
-          },
+          error: "product not found",
         });
       }
       req.product = product;

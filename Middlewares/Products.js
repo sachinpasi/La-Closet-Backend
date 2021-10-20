@@ -1,21 +1,19 @@
 const Product = require("../Models/Product");
 
 exports.updateStock = (req, res, next) => {
-  let myOperations = req.body.order.products.map((prod) => {
+  let myOperations = req.body.products.map((product) => {
+    console.log(product);
     return {
       updateOne: {
-        filter: { _id: prod._id },
-        update: { $inc: { stock: -prod.count, sold: +prod.count } },
+        filter: { _id: product._id },
+        update: { $inc: { stock: -product.count, sold: +product.count } },
       },
     };
   });
-
-  Product.bulkWrite(myOperations, {}, (error, products) => {
-    if (error) {
+  Product.bulkWrite(myOperations, {}, (err, product) => {
+    if (err) {
       return res.status(400).json({
-        error: {
-          message: "BULK OPERATION FAILED",
-        },
+        error: "bulk operation failed",
       });
     }
     next();
